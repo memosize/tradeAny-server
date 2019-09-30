@@ -7,27 +7,28 @@ export const Router = express.Router();
 Router.get("/info", function(req: Request, res: Response) {
   return res.send("<h1>sdfsdf</h1>");
 });
-Router.get("/register", function(req: Request, res: Response) {
+Router.post("/register", function(req: Request, res: Response) {
     console.log('register')
-  userModel.create(
-    {
-      type: 1,
-      user: "mikis001",
-      password: "000000",
-      company:'facebook'
-    },
-    function(e, d) {
-      if (e) {
-        res.json({ msg: "server error", code: 0 });
-      } else {
-        res.json({ code: 1 });
+    console.log(req)
+    console.log("------------------")
+    const { user, password, type,email } = req.body;
+    console.log(user)
+    userModel.findOne({user}, function(err, doc) {
+    // userModel.remove({}, function(err) {})
+  if (doc) {
+        return res.json({ code: 1, msg: "用户名重复" });
       }
-    }
-  );
+      userModel.create({ user, type,email, pwd:password }, function(e, d) {
+        if (e) {
+          return res.json({ code: 1, msg: "后端出错了" });
+        }
+        return res.json({ code: 0 });
+      });
+    });
 });
 Router.get("/userlist",function(req:Request,res:Response){
     userModel.findOne({
-        user:'mikis001'
+      
     },function(e,d){
         if(e){
           res.json({msg:'server error'})
