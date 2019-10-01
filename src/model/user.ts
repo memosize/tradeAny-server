@@ -9,7 +9,8 @@ const user = {
   desc: { type: String },
   title: { type: String },
   company: { type: String },
-  money: { type: String }
+  money: { type: String },
+  nick: {type:String,require:true}
 };
 mongoose.model("user", new mongoose.Schema(user));
 export const userModel = mongoose.model("user");
